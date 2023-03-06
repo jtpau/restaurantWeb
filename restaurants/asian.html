@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<link rel="stylesheet" type="text/css" href="../styles/menuStyle.css">
+	<link rel="stylesheet" type="text/css" href="../styles/restaurantsListStyle.css">
+</head>
+  <body>
+	<div class="titles">
+		<h1></h1>
+		<h2 id="japo"></h2>
+		<ul id="japones">
+        </ul>
+        <h2 id="chin"></h2>
+        <ul id="chino">
+        </ul>
+        <h2 id="thai"></h2>
+        <ul id="thailandes">
+		</ul>
+	</div>
+
+	<!-- Menú hamburguesa -->
+	<div class="hamburger">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	
+	<!-- Menú desplegable -->
+	<div class="menu">
+		<h2><a href="burger.html">&#127828 Hamburguesas</a></h2>
+		<h2><a href="italian.html">&#127829 Italiano</a></h2>
+		<h2><a href="asian.html">&#127857 Asiático</a></h2>
+		<h3>&#127843 Japonés</h3>
+		<h3>&#127836 Chino</h3>
+		<h3>&#129377 Tailandés</h3>
+		<h2>Tapeo</h2>
+		<h2><a href="ejemplo.html">Inicio</a></h2>
+
+	</div>
+
+	<!-- esto va dentro de un .js-->
+	<script>
+		const hamburger = document.querySelector('.hamburger');
+		const menu = document.querySelector('.menu');
+
+		hamburger.addEventListener('click', () => {
+			hamburger.classList.toggle('open');
+			menu.classList.toggle('open');
+		});
+	</script>
+
+	<script>
+		// Realizar una petición GET al servidor Flask para obtener los restaurantes
+		fetch('http://127.0.0.1:5000/restaurantes/resp/asian')
+			.then(response => response.json())
+			.then(data => {
+				const h1 = document.querySelector('h1');
+				// Actualizar el contenido del elemento h1 con el valor de tipo_restaurante
+				h1.textContent = `${data[0].tipo_restaurante}`;
+                
+				const japoTitle = document.querySelector('japo');
+				const chinTitle = document.querySelector('chin');
+				const thaiTitle = document.querySelector('thai');
+
+				// Agregar cada restaurante a la lista
+                //TODO RELLENAR LA BASE DE DATOS Y VER QUE SE CONSTRUYE DE FORMA CORRECTA
+                //TODO VER COMO SE COMPARA EL JSON CON UN STRING PARA SABER 
+				const japanRestaurantList = document.getElementById('japones');
+				const chinRestaurantList = document.getElementById('chino');
+				const thaiRestaurantList = document.getElementById('thailandes');
+				data.forEach(restaurante => {
+                    const asianRestaurantElement = document.createElement('li');
+                    asianRestaurantElement.classList.add('texto');
+                    asianRestaurantElement.innerHTML = `<a href="${restaurante.url_restaurante}">${restaurante.nombre_restaurante}</a>`;                   
+                    if(`${restaurante.subtipo_restaurante}` == `Japones`)
+                    {
+                        japoTitle.textContent = `${restaurante.subtipo_restaurante}`;
+                        japanRestaurantList.appendChild(asianRestaurantElement);
+                    }
+                    else if(restaurante.subtipo_restaurante == 'Chino')
+                    {
+                        chinTitle.textContent = `${restaurante.subtipo_restaurante}`;
+                        chinRestaurantList.appendChild(asianRestaurantElement);
+                    }
+                    else if(restaurante.subtipo_restaurante == 'Tailandes')
+                    {
+                        thaiTitle.textContent = `${restaurante.subtipo_restaurante}`;
+                        thaiRestaurantList.appendChild(asianRestaurantElement);
+                    }
+				});
+			})
+			.catch(error => {
+				console.error('Ocurrió un error:', error);
+			});
+	</script>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RestaurantList</title>
+
+    <link rel="stylesheet" type="text/css" href="../styles/menuStyle.css">
+    <link rel="stylesheet" type="text/css" href="../styles/popUp.css">
+    <link rel="stylesheet" type="text/css" href="../styles/buttonStyle.css">
+    <link rel="stylesheet" type="text/css" href="../styles/images.css">
+
+	<button class="buttonAbs buttonAdd" id="AddRestaurant">Incluir</button>
+	<button class="buttonAbs buttonRm" id="SubsRestaurant">Eliminar</button>
+	
+	
+</head>
+<body>
+
+	<div class="contenido">
+		<p class="titulo">RESTAURANT LIST</p>
+	</div>
+
+	
+	<!-- Menú hamburguesa -->
+	<div class="hamburger">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	
+	<!-- Menú desplegable -->
+	<div class="menu">
+		<h2><a href="burger.html">&#127828 Hamburguesas</a></h2>
+		<h2><a href="italian.html">&#127829 Italiano</a></h2>
+		<h2>&#127857 Asiático</h2>
+		<h3>&#127843 Japonés</h3>
+		<h3>&#127836 Chino</h3>
+		<h3>&#129377 Tailandés</h3>
+		<h2>Tapeo</h2>
+	</div>
+
+	<!--Pop up para añadir restaurante-->
+	<div id="popUpForm" style="display: none;">
+		<form>
+			<!--TODO hacer que la seccion te de a elegir entre las secciones existentes
+				con un desplegable -->
+				<button class="buttonAbs buttonClose">X</button>
+				<label for="retaurantSection">Sección :</label>
+				
+			<!--TODO leer de la base de datos y crear las opciones con las secciones principales, (secundarias no) -->
+			<select id="retaurantSection" name="opciones" enabled>
+				<option value="Hamburgueseria">Hamburgueseria</option>
+				<option value="Italiano">Italiano</option>
+				<option value="Asiatico">Asiatico</option>
+			</select>
+			<label for="retaurantName">Nombre del restaurante:</label>
+			<input type="text" id="retaurantName"  placeholder="Introduce el nombre del restaurante" name="retaurantName"><br><br>
+			<label for="restaurantUrl">URL del restaurante:</label>
+			<input type="text" id="restaurantUrl"  placeholder="Introduce la URL del restaurante" name="restaurantUrl"><br><br>
+			<button class="buttonAbs buttonOk" id="okAdd">Ok</button>
+		</form>
+	</div>
+	
+	<!--Pop up para eliminar restaurante -->
+	<div id="popUpForm" style="display: none;">
+		<form>
+				<button class="buttonAbs buttonClose">X</button>
+				<label for="retaurantSection">Sección :</label>
+			<select id="retaurantSection" name="opciones" enabled>
+				<option value="Hamburgueseria">Hamburgueseria</option>
+				<option value="Italiano">Italiano</option>
+				<option value="Asiatico">Asiatico</option>
+			</select>
+			<label for="retaurantName">Nombre del restaurante:</label>
+			<input type="text" id="retaurantName"  placeholder="Introduce el nombre del restaurante" name="retaurantName"><br><br>
+			<button class="buttonAbs buttonOk" id="okRemove">Ok</button>
+		</form>
+	</div>
+
+
+
+	<!-- esto va dentro de un .js-->
+	<script>
+		const hamburger = document.querySelector('.hamburger');
+		const menu = document.querySelector('.menu');
+
+		hamburger.addEventListener('click', () => {
+			hamburger.classList.toggle('open');
+			menu.classList.toggle('open');
+		});
+	</script>
+
+	<script>
+		//TODO GESTIONAR SI ES UN POPUP DE ADD O DE REMOVE
+		function validateFields() {
+			const restaurantSection = document.getElementById('retaurantSection');
+			const restaurantName    = document.getElementById('retaurantName');
+
+			if(okPopupButton.id == 'okAdd'){
+				const restaurantUrl = document.getElementById('restaurantUrl');
+				if (restaurantSection.value && restaurantName.value && restaurantUrl.value) {					
+					const retaurantInfo  = {
+						tipo_restaurante: restaurantSection.value,
+    					subtipo_restaurante: null,
+    					nombre_restaurante: restaurantName.value,
+    					url_restaurante: restaurantUrl.value
+					};
+
+					fetch('http://127.0.0.1:5000/restaurantes/add', {
+						method: 'POST',
+						headers: {
+						'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(retaurantInfo)
+					})
+					.then(response => {
+						const hola = response.json();
+						console.log(hola);
+						if (response.ok) {
+							alert('Restaurante añadido correctamente!');
+							form.reset(); // Resetear el formulario
+						} else {
+							alert('Ha ocurrido un error al añadir el restaurante');
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert('Porque sale error?');
+					});
+					return true;
+				}
+				else {
+					alert('Por favor, complete todos los campos.');
+					return false;
+				}	
+			}
+			else
+			{
+				if (restaurantSection.value && restaurantName.value) {
+					// TODO eliminar los datos en la base de datos
+					return true;
+				}
+				else {
+					alert('Por favor, complete todos los campos.');
+					return false;
+				}
+			}
+		}
+
+		const closePopupButton = document.querySelector('.buttonClose');
+		const okPopupButton = document.querySelector('.buttonOk');
+		
+		okPopupButton.addEventListener('click', function() {
+			if (validateFields()) 
+			{
+				// Cerrar la ventana
+				addPopUpForm.style.display = 'none';
+			}
+		});
+		
+		closePopupButton.addEventListener('click', function() {
+			addPopUpForm.style.display = 'none';
+		});
+
+		//add new restaurant 
+		const addRestaurantButton = document.getElementById('AddRestaurant');
+		const addPopUpForm = document.getElementById('popUpForm');
+
+		addRestaurantButton.addEventListener('click', () => {
+			addPopUpForm.style.display = 'block';
+		});
+
+		//remove restaurant 
+		const subsRestaurantButton = document.getElementById('SubsRestaurant');
+		const subsPopUpForm = document.getElementById('popUpForm');
+		
+		subsRestaurantButton.addEventListener('click', () => {
+			subsPopUpForm.style.display = 'block';
+		});
+		</script>
+	
+</body>
+</html>
+  

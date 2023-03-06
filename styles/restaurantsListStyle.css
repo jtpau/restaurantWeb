@@ -1,0 +1,63 @@
+
+/* Estilos generales */
+  body {
+      font-family: "Lucida Calligraphy", cursive;
+      background-image: url("../images/fondo2.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+  }
+
+  .titles{
+      box-shadow: none;
+      z-index: 2;
+  }
+.titles h1 {
+  position: sticky;
+  top: 0;
+  background-color: #cccaca;
+  padding: 20px;
+  text-align: center;
+  margin-left: 300px;
+  font-size: 70px;
+  z-index: 2;
+}
+.titles h2 {
+  position: sticky;
+  top: 110px;
+  background-color: #cccaca;
+  padding: 2px;
+  text-align: center;
+  margin-left: 300px;
+  box-shadow: none;
+  font-size: 50px;
+  z-index: 2;
+}
+/* Estilos para la clase "texto" */
+.texto {
+  font-size: 30px;
+  background-color: rgba(255, 255, 255, 0.811);
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  margin-bottom: 30px;
+  list-style: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+  text-align: left;
+  margin-left: 300px;
+  z-index: 2;
+}
+.texto:hover {
+  background-color: rgba(139, 135, 135, 0.685);
+}
+/* Estilos específicos para el primer elemento de la lista */
+.texto:first-child {
+  margin-top: 10px;
+}
+a {
+  color: #000000;
+  text-decoration: none;
+  }

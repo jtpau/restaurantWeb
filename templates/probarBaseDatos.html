@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+  </head>
+  <body>
+
+    <h1>TITULO</h1>
+    <ul id="restaurant-list">
+    </ul>
+
+    <script>
+        // Realizar una petición GET al servidor Flask para obtener los restaurantes
+        fetch('http://127.0.0.1:5000/restaurantes/resp')
+            .then(response => response.json())
+            .then(data => {
+                const h1 = document.querySelector('h1');
+                // Actualizar el contenido del elemento h1 con el valor de tipo_restaurante
+                h1.textContent = data[0].tipo_restaurante;
+
+                // Agregar cada restaurante a la lista
+                const restaurantList = document.getElementById('restaurant-list');
+                data.forEach(restaurante => {
+                    const restauranteElement = document.createElement('li');
+                    restauranteElement.innerHTML = `<a href="${restaurante.url_restaurante}">${restaurante.nombre_restaurante}</a>`;
+                    restaurantList.appendChild(restauranteElement);
+                });
+            })
+            .catch(error => {
+                console.error('Ocurrió un error:', error);
+            });
+    </script>
+
+  </body>
+</html>

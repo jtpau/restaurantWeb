@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<link rel="stylesheet" type="text/css" href="../styles/menuStyle.css">
+	<link rel="stylesheet" type="text/css" href="../styles/restaurantsListStyle.css">
+</head>
+  <body>
+	<div class="titles">
+		<h1></h1>
+		<ul id="bugers">
+		</ul>
+	</div>
+
+	<!-- Menú hamburguesa -->
+	<div class="hamburger">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	
+	<!-- Menú desplegable -->
+	<div class="menu">
+		<h2><a href="burger.html">&#127828 Hamburguesas</a></h2>
+		<h2><a href="italian.html">&#127829 Italiano</a></h2>
+		<h2><a href="asian.html">&#127857 Asiático</a></h2>
+		<h3>&#127843 Japonés</h3>
+		<h3>&#127836 Chino</h3>
+		<h3>&#129377 Tailandés</h3>
+		<h2>Tapeo</h2>
+		<h2><a href="ejemplo.html">Inicio</a></h2>
+
+	</div>
+
+	<!-- esto va dentro de un .js-->
+	<script>
+		const hamburger = document.querySelector('.hamburger');
+		const menu = document.querySelector('.menu');
+
+		hamburger.addEventListener('click', () => {
+			hamburger.classList.toggle('open');
+			menu.classList.toggle('open');
+		});
+	</script>
+
+	<script>
+		// Realizar una petición GET al servidor Flask para obtener los restaurantes
+		fetch('http://127.0.0.1:5000/restaurantes/resp/burger')
+			.then(response => response.json())
+			.then(data => {
+				const h1 = document.querySelector('h1');
+				// Actualizar el contenido del elemento h1 con el valor de tipo_restaurante
+				h1.textContent = `🍔 ${data[0].tipo_restaurante} 🍔`;
+
+				// Agregar cada restaurante a la lista
+				const burgerRestaurantList = document.getElementById('bugers');
+				data.forEach(restaurante => {
+					const burgerRestauranteElement = document.createElement('li');
+					burgerRestauranteElement.classList.add('texto');
+					burgerRestauranteElement.innerHTML = `<a href="${restaurante.url_restaurante}">${restaurante.nombre_restaurante}</a>`;
+					burgerRestaurantList.appendChild(burgerRestauranteElement);
+				});
+			})
+			.catch(error => {
+				console.error('Ocurrió un error:', error);
+			});
+	</script>
+  </body>
+</html>
